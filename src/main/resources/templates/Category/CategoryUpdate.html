@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment :: head">
+<title>Insert title here</title>
+</head>
+<body>
+	<nav th:replace="fragment :: header"></nav>
+	<div class="row">
+		<div class="col-2">
+			<ul th:replace="fragment :: menu-left"></ul>
+		</div>
+		<div class="col-10">
+			<form method="post"
+				th:action="@{/update-category/{id}(id = ${category.categoryId})}"
+				th:object="${category}">
+				<div class="form-group">
+					<label for="exampleInputEmail1">Category Name </label> <input
+						type="text" class="form-control" id="exampleInputEmail1"
+						aria-describedby="emailHelp" placeholder="Category name"
+						th:field="*{categoryName}">
+					<div th:if="${#fields.hasErrors('categoryName')}"
+						th:errors="*{categoryName}"></div>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

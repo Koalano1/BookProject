@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment :: head">
+<meta charset="ISO-8859-1">
+<title>book list</title>
+</head>
+<body>
+	<nav th:replace="fragment :: header"></nav>
+	<div class="row">
+		<div class="col-2">
+			<ul th:replace="fragment :: menu-left"></ul>
+		</div>
+		<div class="col-10">
+			<h1>Book List</h1>
+			<nav class="navbar navbar-light bg-light">
+				<form class="form-inline">
+					<input class="form-control mr-sm-2" type="search"
+						placeholder="Search" aria-label="Search" name="keyword"
+						th:value="${keyword}">
+					<select class="form-control" name="category">
+						<option value="0" selected>Chose Category</option>
+						<option th:each="item:${listCategory}"
+							th:text="${item.categoryName}" th:value="${item.categoryId}"
+							></option>
+					</select>
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</nav>
+
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th>id</th>
+						<th>book name</th>
+						<th>price</th>
+						<th>ngay san xuat</th>
+						<th>Category</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${list.empty}">
+						<td>Danh sach rong</td>
+					</tr>
+					<tr th:each="item : ${list}">
+						<td th:utext="${item.bookId}"></td>
+						<td th:utext="${item.bookName}"></td>
+						<td th:utext="${item.price}"></td>
+						<td th:utext="${item.day}"></td>
+						<td th:utext="${item.category.categoryName}"></td>
+						<td><a
+							th:href="@{/update-book/{bookId}(bookId = ${item.bookId})}">update</a>|
+							<a th:href="@{/delete-book/{bookId}(bookId = ${item.bookId})}">delete</a>
+					</tr>
+				</tbody>
+			</table>
+			<a th:href="@{/create-book}">
+				<button class="btn btn-primary">Add new book</button>
+			</a>
+			<div>
+				<a th:href="@{'/book-list'(page=${list.number - 1})}" th:if="${list.hasPrevious()}">Previous</a>
+				<span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>
+				<a th:href="@{'/book-list'(page=${list.number + 1})}" th:if="${list.hasNext()}">Next</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+<!-- <td th:switch="${item.category.categoryId}">
+				<span th:each="category:${listCategory}"
+				th:case="${category.categoryId}"
+				th:utext="${category.categoryName}"></span>
+			</td> -->

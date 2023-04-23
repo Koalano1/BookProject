@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment :: head">
+<meta charset="ISO-8859-1">
+<title>Category list</title>
+</head>
+<body>
+	<nav th:replace="fragment :: header"></nav>
+	<div class="row">
+		<div class="col-2">
+			<ul th:replace="fragment :: menu-left"></ul>
+		</div>
+		<div class="col-10">
+			<h1>Category</h1>
+			<nav class="navbar navbar-light bg-light">
+				<form class="form-inline">
+					<input class="form-control mr-sm-2" type="search"
+						placeholder="Search" aria-label="Search" name="keyword"
+						th:value="${keyword}">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</nav>
+			<table class="table">
+				<thead class="thead-dark">
+				<tr>
+					<td>id</td>
+					<td>book name</td>
+				</tr>
+				</thead>
+				<tr th:if="${list.empty}">
+					<td>Danh sach rong</td>
+				</tr>
+				<tr th:each="item : ${list}">
+					<td th:utext="${item.categoryId}"></td>
+					<td th:utext="${item.categoryName}"></td>
+
+					<td><a
+						th:href="@{/update-category/{id}(id = ${item.categoryId})}">update</a>|
+						<a th:href="@{/delete-category/{id}(id = ${item.categoryId})}">delete</a>
+				</tr>
+			</table>
+			<a th:href="@{/create-category}">
+				<button>Add new Category</button> 
+			</a>
+			 <div>
+				<a th:href="@{'/category-list'(page=${list.number - 1})}" th:if="${list.hasPrevious()}">Previous</a>
+				<span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>
+				<a th:href="@{'/category-list'(page=${list.number + 1})}" th:if="${list.hasNext()}">Next</a>
+			</div> 
+		</div>
+	</div>
+</body>
+</html>
